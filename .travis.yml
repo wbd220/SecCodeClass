@@ -1,2 +1,7 @@
 compiler:
  - gcc
+before-install:
+apt-get check
+script:
+make
+make test
