@@ -3,5 +3,6 @@ compiler:
 before-install:
  - sudo apt-get install -y build-essential check
 script:
+ - make
  - make install
  - make test
