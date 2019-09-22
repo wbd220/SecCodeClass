@@ -15,7 +15,7 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     int word_len = strlen(word);
     if (word_len > LENGTH){
         //printf("Word to be checked too large, bye!");
-        exit;
+        return 0;
     }
 
     //While cursor is not NULL:
