@@ -1,7 +1,16 @@
-#include <check.h>
+/*#include <check.h>
 #include "dictionary.h"
 #include <stdlib.h>
 #include "spell.c"
+*/
+#include <check.h>
+#include "dictionary.h"
+//#include "dictionary.c"
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 
 #define DICTIONARY "wordlist.txt"
 
