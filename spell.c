@@ -143,7 +143,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
                 // tempstr should be a conditioned 'word'; check tempstr for length, ensure a null, then test it
                 if (tempstr > LENGTH){
                 //    printf("Word to be checked too large, bye!");  // tshooting
-                    exit;
+                    return 0;
                 }
                 tempstr[LENGTH] = NULL;  //enforce NULL at tempstr[LENGTH]
 
