@@ -18,8 +18,6 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     //Set hashmap_t cursor equal to hashtable[bucket].
     hashmap_t cursor = hashtable[bucket];
 
-    //While cursor is not NULL:
-    //while (cursor != NULL) {
         //    If word equals cursor->word:
         if (strcmp(word, cursor->word) == 0) {
             //        return True.
