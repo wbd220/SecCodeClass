@@ -7,16 +7,16 @@
 #include <ctype.h>
 
 bool check_word(const char* word, hashmap_t hashtable[]) {
-    //Set int bucket to the output of hash_function(word).
-    int bucket = hash_function(word);
-    //Set hashmap_t cursor equal to hashtable[bucket].
-    hashmap_t cursor = hashtable[bucket];
-
     int word_len = strlen(word);
     if (word_len > LENGTH){
         //printf("Word to be checked too large, bye!");
         return 0;
     }
+
+    //Set int bucket to the output of hash_function(word).
+    int bucket = hash_function(word);
+    //Set hashmap_t cursor equal to hashtable[bucket].
+    hashmap_t cursor = hashtable[bucket];
 
     //While cursor is not NULL:
     //while (cursor != NULL) {
@@ -126,6 +126,12 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
                 while(tempstr[g]) {
                     g++;
                 }
+                // check the length of the word to be sure it isn't too long
+                if (g > LENGTH){
+                    //    printf("Word to be checked too large, bye!");  // tshooting
+                    return 0;
+                }
+                // remove punctuation from front and back
                 int punct1 = 0;
                 if ((punct1 = ispunct(tempstr[g-1])) != 0){  // if the end of the word is punctuation, replace with Null
                     tempstr[g-1] = '\0';
@@ -141,15 +147,12 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
                 }
                 //printf("tempstr after start of word is punct: %s \n", tempstr);  //tshooting
                 // tempstr should be a conditioned 'word'; check tempstr for length, ensure a null, then test it
-                if (tempstr > LENGTH){
-                //    printf("Word to be checked too large, bye!");  // tshooting
-                    return 0;
-                }
+
                 tempstr[LENGTH] = NULL;  //enforce NULL at tempstr[LENGTH]
 
                 int k = check_word(tempstr, hashtable);
                 if(k != 1){
-                    //printf("bad: %s\n", tempstr);
+                    // printf("bad: %s\n", tempstr);  //tshooting
                     misspelled[num_misspelled] = malloc(LENGTH+1);
                     strcpy(misspelled[num_misspelled], tempstr);
                     num_misspelled++;
