@@ -117,22 +117,23 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
     while ((read = getline(&line, &len, fp)) != -1) {
         //printf("%s", line);   // used this to assure reading file ok
         // Split the line on spaces.  Get one word out
-            tempstr = strtok(line," \t\r\n");
-            while(tempstr){
+        tempstr = strtok(line," \t\r\n");
+            while (tempstr) {
                 // remove the punctuation on front or back of word, check misspelled
                 int g = 0;
-                while(tempstr[g]) {
+                while (tempstr[g]) {
                     g++;
                 }
                 // check the length of the word to be sure it isn't too long
-                if (g > LENGTH){
+                if (g > LENGTH) {
                     //    printf("Word to be checked too large, bye!");  // tshooting
                     return 0;
                 }
                 // remove punctuation from front and back
                 int punct1 = 0;
-                if ((punct1 = ispunct(tempstr[g-1])) != 0){  // if the end of the word is punctuation, replace with Null
-                    tempstr[g-1] = '\0';
+                if ((punct1 = ispunct(tempstr[g - 1])) !=
+                    0) {  // if the end of the word is punctuation, replace with Null
+                    tempstr[g - 1] = '\0';
                 }
                 int punct2 = 0;
                 if ((punct2 = ispunct(tempstr[0])) != 0) { //if the start of the word is punctuation, remove it
@@ -146,18 +147,18 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
                 //printf("tempstr after start of word is punct: %s \n", tempstr);  //tshooting
                 // tempstr should be a conditioned 'word'; check tempstr for length, ensure a null, then test it
 
-                tempstr[LENGTH] = NULL;  //enforce NULL at tempstr[LENGTH]
+                tempstr[g] = NULL;  //enforce NULL at tempstr[LENGTH]
 
                 int k = check_word(tempstr, hashtable);
-                if(k != 1){
+                if (k != 1) {
                     // printf("bad: %s\n", tempstr);  //tshooting
-                    misspelled[num_misspelled] = malloc(LENGTH+1);
+                    misspelled[num_misspelled] = malloc(LENGTH + 1);
                     strcpy(misspelled[num_misspelled], tempstr);
                     num_misspelled++;
                 }
-                tempstr= strtok(NULL, " \t\r\n");
+                tempstr = strtok(NULL, " \t\r\n");
             }
-        }
+    }
     //printf("somewhere to do break point and look at what is in misspelled; %d \n", eo_mispelled);
     return num_misspelled;
  }

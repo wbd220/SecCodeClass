@@ -15,7 +15,7 @@ int main() {
     char * misspelled[0];
 
     FILE * fp;
-    fp = fopen("text2test.txt", "r");
+    fp = fopen("test1.txt", "r");
     if (fp == NULL)
         exit(EXIT_FAILURE);
     int num_mispelled = check_words(fp, hashtable, misspelled);
