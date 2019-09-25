@@ -48,9 +48,9 @@ START_TEST(test_check_words_normal)
         hashmap_t hashtable[HASH_SIZE];
         load_dictionary(DICTIONARY, hashtable);
         char* expected[3];
-        expected[0] = "sogn";
-        expected[1] = "skyn";
-        expected[2] = "betta";
+        expected[2] = "sogn";
+        expected[0] = "skyn";
+        expected[1] = "betta";
         char *misspelled[MAX_MISSPELLED];
         FILE *fp = fopen("test1.txt", "r");
         int num_misspelled = check_words(fp, hashtable, misspelled);
