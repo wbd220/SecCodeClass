@@ -88,6 +88,18 @@ START_TEST(test_check_word_buffer_overflow)
 }
 END_TEST
 
+START_TEST(test_check_word_with_two_punctuations) // check that a word with two punctuations will fail
+    {
+        hashmap_t hashtable[HASH_SIZE];
+        load_dictionary(DICTIONARY, hashtable);
+        const char* correct_word = "Justice";
+        const char* double_punctuation_word = "place..";
+        ck_assert(check_word(correct_word, hashtable));
+        ck_assert(!check_word(double_punctuation_word, hashtable));
+        // Test here: What if a word begins and ends with "?
+    }
+END_TEST
+
 Suite *
 check_word_suite(void)
 {
@@ -100,6 +112,7 @@ check_word_suite(void)
     tcase_add_test(check_word_case, test_check_words_normal);
     tcase_add_test(check_word_case, test_check_word_normal);
     tcase_add_test(check_word_case, test_check_word_buffer_overflow);
+    tcase_add_test(check_word_case, test_check_word_with_two_punctuations);
     suite_add_tcase(suite, check_word_case);
     return suite;
 }
