@@ -101,6 +101,7 @@ bool load_dictionary(const char* dictionary, hashmap_t hashtable[])
     }
     // Close dict_file.
     fclose(fp);
+    return 1;
 }
 
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
