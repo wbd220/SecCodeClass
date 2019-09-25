@@ -152,7 +152,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
                 int k = check_word(tempstr, hashtable);
                 if (k != 1) {
-                    // printf("bad: %s\n", tempstr);  //tshooting
+                    printf("bad: %s\n", tempstr);  //tshooting
                     misspelled[num_misspelled] = malloc(LENGTH + 1);
                     strcpy(misspelled[num_misspelled], tempstr);
                     num_misspelled++;
@@ -160,6 +160,6 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
                 tempstr = strtok(NULL, " \t\r\n");
             }
     }
-    //printf("somewhere to do break point and look at what is in misspelled; %d \n", eo_mispelled);
+    //printf("somewhere to do break point and look at what is in misspelled; %d \n", num_misspelled);
     return num_misspelled;
  }
