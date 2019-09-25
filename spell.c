@@ -147,7 +147,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
                 //printf("tempstr after start of word is punct: %s \n", tempstr);  //tshooting
                 // tempstr should be a conditioned 'word'; check tempstr for length, ensure a null, then test it
 
-                tempstr[g] = NULL;  //enforce NULL at tempstr[LENGTH]
+                tempstr[g] = '\0';  //enforce NULL at tempstr[LENGTH]
 
                 int k = check_word(tempstr, hashtable);
                 if (k != 1) {
