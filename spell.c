@@ -152,7 +152,7 @@ int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
 
                 int k = check_word(tempstr, hashtable);
                 if (k != 1) {
-                    printf("bad: %s\n", tempstr);  //tshooting
+                    //printf("bad: %s\n", tempstr);  //tshooting
                     misspelled[num_misspelled] = malloc(LENGTH + 1);
                     strcpy(misspelled[num_misspelled], tempstr);
                     num_misspelled++;
