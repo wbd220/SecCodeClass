@@ -47,11 +47,11 @@ START_TEST(test_check_words_normal)
     {
         hashmap_t hashtable[HASH_SIZE];
         load_dictionary(DICTIONARY, hashtable);
-        char* expected[3];
+        char* expected[4];
         expected[0] = "sogn";
-        expected[1] = "sogn";
-        expected[2] = "skyn";
-        expected[3] = "betta";
+        //expected[1] = "sogn";
+        //expected[2] = "skyn";
+        //expected[3] = "betta";
         char *misspelled[MAX_MISSPELLED];
         FILE *fp = fopen("test1.txt", "r");
         int num_misspelled = check_words(fp, hashtable, misspelled);
