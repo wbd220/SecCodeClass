@@ -100,6 +100,18 @@ START_TEST(test_check_word_with_two_punctuations) // check that a word with two 
     }
 END_TEST
 
+START_TEST(test_check_word_with_apostrophe_s) // check that a word with an apostrophe s
+    {
+        hashmap_t hashtable[HASH_SIZE];
+        load_dictionary(DICTIONARY, hashtable);
+        const char* correct_word = "Justice";
+        const char* apostrophe_word = "Othello's";
+        ck_assert(check_word(correct_word, hashtable));
+        ck_assert_msg(check_word(apostrophe_word, hashtable) == 0, "%s", apostrophe_word);
+        // Test here: What if a word begins and ends with "?
+    }
+END_TEST
+
 Suite *
 check_word_suite(void)
 {
@@ -113,6 +125,7 @@ check_word_suite(void)
     tcase_add_test(check_word_case, test_check_word_normal);
     tcase_add_test(check_word_case, test_check_word_buffer_overflow);
     tcase_add_test(check_word_case, test_check_word_with_two_punctuations);
+    tcase_add_test(check_word_case, test_check_word_with_apostrophe_s);
     suite_add_tcase(suite, check_word_case);
     return suite;
 }
