@@ -59,8 +59,7 @@ START_TEST(test_check_words_normal)
         int len1 = strlen(misspelled[0]);
         int len2 = strlen(expected[0]);
         ck_assert_msg(test, "%d!=%d", len1, len2);
-        printf("misspelled[0]: %s  expected[0]: %s", misspelled[0], expected[0]);
-        ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0);
+        ck_assert_msg(strcmp(misspelled[0], expected[0]) == 0, "wanted %s, got %s", misspelled[0], expected[0]);
         ck_assert_msg(strcmp(misspelled[1], expected[1]) == 0);
         ck_assert_msg(strcmp(misspelled[2], expected[2]) == 0);
     }
