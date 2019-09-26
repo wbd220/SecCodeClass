@@ -27,6 +27,9 @@ int main() {
         i++;
     }
 
+    while(misspelled != NULL){
+        free(misspelled);
+    }
 }
 
 /*
