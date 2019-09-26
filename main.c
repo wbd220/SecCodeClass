@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
+// added a comment to check if my pushes are still signed
 #define DICTIONARY "/root/CLionProjects/SecCoding/wordlist.txt"
 
 int main() {
