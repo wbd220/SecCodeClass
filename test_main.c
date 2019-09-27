@@ -112,6 +112,18 @@ START_TEST(test_check_word_with_apostrophe_s) // check that a word with an apost
     }
 END_TEST
 
+START_TEST(test_check_word_with_number) // check that a word that is numbers is spelled correctly
+    {
+        hashmap_t hashtable[HASH_SIZE];
+        load_dictionary(DICTIONARY, hashtable);
+        const char* correct_word = "9999";
+        const char* another_correct_word = "12345";
+        ck_assert(check_word(correct_word, hashtable));
+        ck_assert(check_word(another_correct_word, hashtable));
+        // Test here: What if a word begins and ends with "?
+    }
+END_TEST
+
 Suite *
 check_word_suite(void)
 {
@@ -126,6 +138,7 @@ check_word_suite(void)
     tcase_add_test(check_word_case, test_check_word_buffer_overflow);
     tcase_add_test(check_word_case, test_check_word_with_two_punctuations);
     tcase_add_test(check_word_case, test_check_word_with_apostrophe_s);
+    tcase_add_test(check_word_case, test_check_word_with_number);
     suite_add_tcase(suite, check_word_case);
     return suite;
 }

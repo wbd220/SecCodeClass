@@ -7,15 +7,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#define DICTIONARY "/root/CLionProjects/SecCoding/wordlist.txt"
+//#define DICTIONARY "/root/CLionProjects/SecCoding/wordlist.txt"
 
-int main() {
+int main(int argc, char* argv[]) {
     hashmap_t hashtable[HASH_SIZE];
-    load_dictionary(DICTIONARY, hashtable);
+    load_dictionary(argv[2], hashtable);
     char *misspelled[0];
 
     FILE *fp;
-    fp = fopen("text2test.txt", "r");
+    fp = fopen(argv[1], "r");
     if (fp == NULL)
         exit(EXIT_FAILURE);
     int num_mispelled = check_words(fp, hashtable, misspelled);

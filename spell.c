@@ -12,6 +12,16 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
         //printf("Word to be checked too large, bye!");
         return 0;
     }
+    // check for numbers only and it's ok if it is!
+    int isnumber = 1;
+    for (int n = 0; n < word_len; n++){
+        if (!isdigit(word[n])){
+            isnumber = 0;
+        }
+    }
+    if (isnumber == 1){
+        return 1;
+    }
 
     //Set int bucket to the output of hash_function(word).
     int bucket = hash_function(word);
