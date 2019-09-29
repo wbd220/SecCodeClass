@@ -7,34 +7,52 @@
 #include <ctype.h>
 
 bool check_word(const char* word, hashmap_t hashtable[]) {
+    int word_len = strlen(word);
+    if (word_len > LENGTH){
+        //printf("Word to be checked too large, bye!");
+        return 0;
+    }
+    // check for numbers only and it's ok if it is!
+    int isnumber = 1;
+    for (int n = 0; n < word_len; n++){
+        if (!isdigit(word[n])){
+            isnumber = 0;
+        }
+    }
+    if (isnumber == 1){
+        return 1;
+    }
+
     //Set int bucket to the output of hash_function(word).
     int bucket = hash_function(word);
     //Set hashmap_t cursor equal to hashtable[bucket].
     hashmap_t cursor = hashtable[bucket];
 
-    //While cursor is not NULL:
-    while (cursor != NULL) {
         //    If word equals cursor->word:
         if (strcmp(word, cursor->word) == 0) {
             //        return True.
             return 1;
         }
-        //    Else if lower_case(word) equals cursor->word:
+        //    Else make lower_case(word) and check equals cursor->word:
         else {
-            int i = 0;
-            while (word[i]) {
-                tolower(word[i]);
-                i++;
+            // set word to lower case
+            char word_lower[LENGTH+1];
+            for (int i=0; i <= strlen(word); i++) {
+                word_lower[i] = tolower(word[i]);
             }
-            // the word changed  might have to reset the index and run the linked list (if there)
-            if (strcmp(word, cursor->word) == 0) {
-                // return True.
+            // the word changed reset the index and run the linked list (if there)
+            int bucket2 = hash_function(word_lower);
+            hashmap_t cursor2 = hashtable[bucket2];
+            while(cursor2 != NULL){  //check repeatedly through the linked list for the lower case word
+                if (strcmp(word_lower, cursor2->word) == 0) {
+                    // return True.
                 return 1;
+                }
+                // Set cursor to cursor->next.
+                cursor2 = cursor2->next;
             }
-            // Set cursor to cursor->next.
-            cursor = cursor->next;
         }
-    }
+    //}
     //        return False.
     return 0;
 }
@@ -47,6 +65,7 @@ bool load_dictionary(const char* dictionary, hashmap_t hashtable[])
     for(i = 0; i < HASH_SIZE; i++){
         hashtable[i] = NULL;
     }
+
 
     //Open dict_file from path stored in dictionary.
     //            If dict_file is NULL: return false.
@@ -63,7 +82,7 @@ bool load_dictionary(const char* dictionary, hashmap_t hashtable[])
     while ((read = getline(&word, &len, fp)) != -1) {
         // printf("%s", word);   // used this to assure reading file ok
         // check to see if word is larger than 45; if so just move to next word
-        if (strlen(word)>45)
+        if (strlen(word)>(LENGTH+1))
         {continue;}
         else {
             //Set hashmap_t new_node to a new node.
@@ -92,87 +111,65 @@ bool load_dictionary(const char* dictionary, hashmap_t hashtable[])
     }
     // Close dict_file.
     fclose(fp);
+    return 1;
 }
 
 int check_words(FILE* fp, hashmap_t hashtable[], char * misspelled[]) {
     // Set int num_misspelled to 0
     int num_misspelled = 0;
     //
-    *misspelled = (char *) malloc(45000);
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
-    char newString[100][46];
-    int i,j,ctr;
+    char* tempstr;
+
     // While line in fp is not EOF (end of file):
     // Read the line
     while ((read = getline(&line, &len, fp)) != -1) {
         //printf("%s", line);   // used this to assure reading file ok
-        // Split the line on spaces.
-        j=0; ctr=0;
-        for(i=0;i<=(strlen(line));i++)
-        {
-            // if space or NULL found, assign NULL into newString[ctr]
-            if(line[i]==' '||line[i]=='\0'||line[i]=='\n')
-            {
-                newString[ctr][j]='\0';
-                ctr++;  //for next word
-                j=0;    //for next word, init index to 0
-            }
-            else
-            {
-                newString[ctr][j]=line[i];
-                j++;
-            }
-        }
-        // got the line split; have to remove the punctuation on front or back of word, remove number, check misspelled
-        int q = 0;
-        char* tempstr;
-        while(newString[q][0]){
-            // move newstring(q) char by char (the sub r) to tempstr
-               tempstr = &newString[q][0];
-            // printf("tempstr before we clip it - %s\n", tempstr); //tshooting
-            int eow = 0;
-            int g = 0;
-            while(tempstr[g]){ // make g length of word because sizeof isn't working
-                eow++;
-                g++;
-            }
-            int punct1 = 0;
-            if ((punct1 = ispunct(tempstr[g-1])) > 0){  // if the end of the word is punctuation, replace with Null
-                tempstr[g-1] = '\0';
-            }
-            int punct2 = 0;
-            if ((punct2 = ispunct(tempstr[0])) > 0){ //if the start of the word is punctuation, remove it
-                //printf("start of word is punct %s\n", tempstr);  //tshooting
-                int t=0;
-                while(tempstr[t]){
-                    tempstr[t] = tempstr[t+1];
-                    t++;
+        // Split the line on spaces.  Get one word out
+        tempstr = strtok(line," \t\r\n");
+            while (tempstr) {
+                // remove the punctuation on front or back of word, check misspelled
+                int g = 0;
+                while (tempstr[g]) {
+                    g++;
+                }
+                // check the length of the word to be sure it isn't too long
+                if (g > LENGTH) {
+                    //    printf("Word to be checked too large, bye!");  // tshooting
+                    return 0;
+                }
+                // remove punctuation from front and back
+                int punct1 = 0;
+                if ((punct1 = ispunct(tempstr[g - 1])) !=
+                    0) {  // if the end of the word is punctuation, replace with Null
+                    tempstr[g - 1] = '\0';
+                }
+                int punct2 = 0;
+                if ((punct2 = ispunct(tempstr[0])) != 0) { //if the start of the word is punctuation, remove it
+                    //printf("start of word is punct %s\n", tempstr);  //tshooting
+                    int t = 0;
+                    while (tempstr[t]) {
+                        tempstr[t] = tempstr[t + 1];
+                        t++;
+                    }
                 }
                 //printf("tempstr after start of word is punct: %s \n", tempstr);  //tshooting
+                // tempstr should be a conditioned 'word'; check tempstr for length, ensure a null, then test it
+
+                tempstr[g] = '\0';  //enforce NULL at tempstr[LENGTH]
+
+                int k = check_word(tempstr, hashtable);
+                if (k != 1) {
+                    //printf("bad: %s\n", tempstr);  //tshooting
+                    misspelled[num_misspelled] = malloc(LENGTH + 1);
+                    strcpy(misspelled[num_misspelled], tempstr);
+                    num_misspelled++;
+                }
+                tempstr = strtok(NULL, " \t\r\n");
             }
-            // tempstr should be a conditioned 'word'; check tempstr
-            int k = check_word(tempstr, hashtable);
-            if(k != 1){
-                num_misspelled++;
-                //printf("bad: %s\n", tempstr);
-                strcat(*misspelled, tempstr);
-            }
-            q++;
-        }
     }
-    //printf("somewhere to do break point and look at what is in misspelled; %d \n", eo_mispelled);
+    //printf("somewhere to do break point and look at what is in misspelled; %d \n", num_misspelled);
     return num_misspelled;
  }
-/*
-    While line in fp is not EOF (end of file):
-        Read the line.
-        Split the line on spaces.
-        For each word in line:
-            Remove punctuation from beginning and end of word.
-            check is number  passes if it is, otherwise --
-            If not check_word(word):
-                Append word to misspelled.
-                Increment num_misspelled.
-    Return num_misspelled. */
