@@ -6,3 +6,4 @@ in class, [I learned to code
 buffer me from all the news
 overflowing love for my wife and kids
 9999   355
+non ascii character here: \u017d

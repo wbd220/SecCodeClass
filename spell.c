@@ -22,6 +22,18 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
     if (isnumber == 1){
         return 1;
     }
+    // check to be sure we have ascii characters only
+    int isascii = 1;
+    for (int a = 0; a < word_len; a++){
+        if (isascii(word[a]) == 0){
+            isascii = 0;
+        }
+    }
+    if (isascii == 0){
+        return 0;
+    }
+
+
 
     //Set int bucket to the output of hash_function(word).
     int bucket = hash_function(word);
