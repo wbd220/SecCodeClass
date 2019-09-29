@@ -32,31 +32,71 @@ int main() {
         free(misspelled[q]);
     }
 }
-    /*
-    //Free your dictionary hashtable (and linked lists!)
-    hashmap_t back1, cursor;
+/* just another stab at freeing the dictionary memory, but fails
     for (int r = 0; r < HASH_SIZE; r++) {  // for the length of the hashmap
-        while (hashtable[r] != NULL) {
-                cursor = hashtable[r];
-                back1 = NULL;  //trailing, next to last node
+        node * curr = hashtable[r];
+        while (curr != NULL) {
+            node *next = curr->next;
+            free(curr);
+            curr = next;
+        }
+    }
+}
+ */
+/*
+// another stab at freeing the dictionary memory
+    hashmap_t second_last;
+    for (int r = 0; r < HASH_SIZE; r++) {  // for the length of the hashmap
+        if (hashtable[r]->next == NULL) {
+            free(hashtable[r]);
+        }
+        else {
+            while (hashtable[r]->next != NULL) {
+                second_last = hashtable[r];
+                while (second_last->next->next != NULL) {
+                    second_last = second_last->next;
+                }
 
-                while(cursor->next != NULL)  //for as long as there is a next
-                {
-                    back1 = cursor;          //set the back to cursor
-                    cursor = cursor->next;   //set the cursor to the next
-                }                            // this should stop with cursor at last and back1 trailing
+                // Delete last node
+                free(second_last->next);
 
-                if(back1 != NULL)
-                    back1->next = NULL;
+                // Change next of second last
+                second_last->next = NULL;
 
-                // if this is the last node in the list
-                if(cursor == hashtable[r])
-                    hashtable[r] = NULL;
-                free(cursor);
+                if (second_last == hashtable[r]) {
+                    hashtable[r]->next = NULL;
+                    free(second_last);
+                }
             }
         }
     }
-    */
+}
+*/
+ /*
+//Free your dictionary hashtable (and linked lists!)
+hashmap_t back1, cursor;
+for (int r = 0; r < HASH_SIZE; r++) {  // for the length of the hashmap
+    while (hashtable[r] != NULL) {
+            cursor = hashtable[r];
+            back1 = NULL;  //trailing, next to last node
+
+            while(cursor->next != NULL)  //for as long as there is a next
+            {
+                back1 = cursor;          //set the back to cursor
+                cursor = cursor->next;   //set the cursor to the next
+            }                            // this should stop with cursor at last and back1 trailing
+
+            if(back1 != NULL)
+                back1->next = NULL;
+
+            // if this is the last node in the list
+            if(cursor == hashtable[r])
+                hashtable[r] = NULL;
+            free(cursor);
+        }
+    }
+}
+*/
 /*
 //  test out the check_word routine  (and technically load_dictionary)
     const char* correct_word = "Justice";

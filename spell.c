@@ -42,14 +42,14 @@ bool check_word(const char* word, hashmap_t hashtable[]) {
             }
             // the word changed reset the index and run the linked list (if there)
             int bucket2 = hash_function(word_lower);
-            hashmap_t cursor = hashtable[bucket2];
-            while(cursor != NULL){  //check repeatedly through the linked list for the lower case word
-                if (strcmp(word_lower, cursor->word) == 0) {
+            hashmap_t cursor2 = hashtable[bucket2];
+            while(cursor2 != NULL){  //check repeatedly through the linked list for the lower case word
+                if (strcmp(word_lower, cursor2->word) == 0) {
                     // return True.
                 return 1;
                 }
                 // Set cursor to cursor->next.
-                cursor = cursor->next;
+                cursor2 = cursor2->next;
             }
         }
     //}
